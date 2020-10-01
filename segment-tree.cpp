@@ -4,17 +4,6 @@ using namespace std;
 const int N = 1e6;
 int tree[4 * N + 1];
 
-void update(int i, int l, int r, int node, int val) {
-    if (i < l || i > r) return;
-    if (l == r) {
-        tree[node] = val;
-        return;
-    }
-    int m = (l + r) / 2;
-    update(i, l, m, 2 * node + 1, val);
-    update(i, m + 1, r, 2 * node + 2, val);
-    tree[node] = min(tree[2 * node + 1], tree[2 * node + 2]);
-}
 
 // min range sum
 void buildTree(int node, vector<int>& a, int l, int r) {
@@ -46,6 +35,17 @@ int query(int node, int l, int r, int ql, int qr) {
     int left = query(2 * node + 1, l, m, ql, qr);
     int right = query(2 * node + 1, m + 1, r, ql, qr);
     return min(left, right);
+}
+void update(int i, int l, int r, int node, int val) {
+    if (i < l || i > r) return;
+    if (l == r) {
+        tree[node] = val;
+        return;
+    }
+    int m = (l + r) / 2;
+    update(i, l, m, 2 * node + 1, val);
+    update(i, m + 1, r, 2 * node + 2, val);
+    tree[node] = min(tree[2 * node + 1], tree[2 * node + 2]);
 }
 
 int main() {
